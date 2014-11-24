@@ -2,6 +2,7 @@
   "dependencies": {
     "express": "~4.10.3",
     "forever": "~0.13.0",
-    "gulp": "~3.8.10"
+    "gulp": "~3.8.10",
+    "through": "~2.3.6"
   }
 }
