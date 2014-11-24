@@ -2,8 +2,8 @@ var HelloMessage = React.createClass(
 {
 	render: function()
 	{
-		return React.createElement("div", null, "Hello ", this.props.name);
+		return <div>Hello {this.props.name}</div>;
 	}
 });
 
-React.render(React.createElement(HelloMessage, {name: "Andrew"}), $("#game > #content").get(0));
+React.render(<HelloMessage name="Andrew" />, $("#game > #content").get(0));
