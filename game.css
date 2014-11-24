@@ -10,9 +10,34 @@
 	right: 0px;
 	bottom: 0px;
 	margin: auto;
+	position: fixed;
+	
+	color: #222;
+	background-color: #EEE;
+}
+
+#game > #menu
+{
+	left: 0rem;
+	right: 0rem;
+	bottom: 0rem;
+	height: 2.5rem;
+	padding: 0.25rem;
 	position: absolute;
 	
-	background-color: red;
+	background-color: #222;
+}
+
+#game > #menu > .item
+{
+	float: left;
+	width: 2.5rem;
+	height: 2.5rem;
+	margin-right: 0.25rem;
+	
+	color: #222;
+	background-color: #EEE;
+	border-radius: 0.25rem;
 }
 
 @media(min-aspect-ratio: 4/3)
