@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "express": "~4.10.3",
-    "forever": "~0.13.0"
+    "forever": "~0.13.0",
+    "gulp": "~3.8.10"
   }
 }
