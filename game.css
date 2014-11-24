@@ -12,7 +12,17 @@
 	margin: auto;
 	position: fixed;
 	
-	color: #222;
+	background-color: pink;
+}
+
+#game > #content
+{
+	top: 0rem;
+	left: 0rem;
+	right: 0rem;
+	bottom: 3rem;
+	position: absolute;
+	
 	background-color: #EEE;
 }
 
@@ -36,8 +46,9 @@
 	margin-right: 0.25rem;
 	
 	color: #222;
+	overflow: hidden;
+	border-radius: 0.1rem;
 	background-color: #EEE;
-	border-radius: 0.25rem;
 }
 
 @media(min-aspect-ratio: 4/3)
