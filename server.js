@@ -13,24 +13,36 @@
 }
 */
 
+var fs = require("fs");
 var gulp = require("gulp");
 var express = require("express");
+var beepbeep = require("beepbeep");
+var colors = require("colors/safe");
+var gulp_sass = require("gulp-sass");
 
 server = express();
+server.listen(1271);
 
 server.get("/*.css", function(request, response)
 {
-    var path = "./source/" + request.params[0] + ".scss";
+    var file = "./source/" + request.params[0] + ".scss";
     
-    gulp.src(path)
-        .pipe(require("gulp-sass")({outputStyle: "compressed"}))
-        //.pipe(require("gulp-autoprefixer")("last 2 versions")
-        .pipe(throughify(response));
+    gulp.src(file)
+        .pipe(gulp_sass())
+        .on("error", unerrorize)
+        .pipe(throughify(response))
+    
+    function unerrorize(error)
+    {
+        var err_msg = error.plugin + " → " + error.message;
+        err_msg = err_msg.replace(/\r?\n|\r/g, " ");
+        
+        console.error(colors.red(err_msg));
+        response.status(500).send(err_msg);
+        
+        beepbeep();
+    }
 });
-
-server.listen(1271);
-
-console.log("The server is at 127.0.0.1:1271.");
 
 function throughify(stream)
 {
@@ -41,3 +53,5 @@ function throughify(stream)
     
     return through(write, end);
 }
+
+console.log("The server is at 127.0.0.1:1271.");
