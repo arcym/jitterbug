@@ -3,4 +3,5 @@ $my-color: blue;
 h1
 {
 	color: $my-color;
+    transition: transform 1s;
 }
