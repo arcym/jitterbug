@@ -43,7 +43,7 @@
     }
 }
 
-#content
+#screen
 {
     top: 0rem;
     left: 0rem;
@@ -65,16 +65,21 @@
     
     background-color: #222;
     
-    .item
+    #items
     {
-        float: left;
-        width: 2.5rem;
         height: 2.5rem;
-        margin-right: 0.25rem;
+        
+        .item
+        {
+            float: left;
+            width: 2.5rem;
+            height: 2.5rem;
+            margin-right: 0.25rem;
 
-        color: #222;
-        overflow: hidden;
-        border-radius: 0.1rem;
-        background-color: #EEE;
+            color: #222;
+            overflow: hidden;
+            border-radius: 0.1rem;
+            background-color: #EEE;
+        }
     }
 }

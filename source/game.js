@@ -4,14 +4,25 @@ var PointAndClickGame = React.createClass(
     {
         return (
             <div id="game">
-                <div id="content">
-                    Hello World!
+                <div id="screen">
                 </div>
                 <div id="menu">
-                    <div className="item"></div>
-                    <div className="item"></div>
+                    <div id="items">
+                        <Item/>
+                        <Item/>
+                    </div>
                 </div>
             </div>
+        )
+    }
+});
+
+var Item = React.createClass(
+{
+    render: function()
+    {
+        return (
+            <div className="item"></div>
         )
     }
 });
