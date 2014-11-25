@@ -18,7 +18,7 @@ var express = require("express");
 
 server = express();
 
-server.use(require("./styles.route.js"));
+server.use(require("./tools/style-ize.js"));
 
 server.listen(1271, function()
 {
