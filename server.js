@@ -19,6 +19,7 @@ var express = require("express");
 server = express();
 
 server.use(require("./tools/style.transpiler.js"));
+server.use(require("express").static("./source/"));
 
 server.listen(1271, function()
 {
