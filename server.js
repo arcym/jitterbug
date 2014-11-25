@@ -13,45 +13,14 @@
 }
 */
 
-var fs = require("fs");
-var gulp = require("gulp");
+var through = require("through");
 var express = require("express");
-var beepbeep = require("beepbeep");
-var colors = require("colors/safe");
-var gulp_sass = require("gulp-sass");
 
 server = express();
-server.listen(1271);
 
-server.get("/*.css", function(request, response)
+server.use(require("./styles.route.js"));
+
+server.listen(1271, function()
 {
-    var file = "./source/" + request.params[0] + ".scss";
-    
-    gulp.src(file)
-        .pipe(gulp_sass())
-        .on("error", unerrorize)
-        .pipe(throughify(response))
-    
-    function unerrorize(error)
-    {
-        var err_msg = error.plugin + " → " + error.message;
-        err_msg = err_msg.replace(/\r?\n|\r/g, " ");
-        
-        console.error(colors.red(err_msg));
-        response.status(500).send(err_msg);
-        
-        beepbeep();
-    }
+    console.log("The server is listening on " + 1271);
 });
-
-function throughify(stream)
-{
-    var through = require("through");
-    
-    function write(data) {stream.write(data.contents);}
-    function end() {stream.end();}
-    
-    return through(write, end);
-}
-
-console.log("The server is at 127.0.0.1:1271.");
