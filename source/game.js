@@ -1,9 +1,23 @@
-var HelloMessage = React.createClass(
+var PointAndClickGame = React.createClass(
 {
-	render: function()
-	{
-		return <div>Hello {this.props.name}</div>;
-	}
+    render: function()
+    {
+        return (
+            <div id="game">
+                <div id="content">
+                    Hello World!
+                </div>
+                <div id="menu">
+                    <div className="item"></div>
+                    <div className="item"></div>
+                </div>
+            </div>
+        )
+    }
 });
 
-React.render(<HelloMessage name="Andrew" />, $("#game > #content").get(0));
+$(document).ready(function()
+{
+    var root = $(this).find("#game").get(0);
+    React.render(<PointAndClickGame/>, root);
+});
