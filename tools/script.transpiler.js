@@ -1,13 +1,13 @@
 var fs = require("fs");
 var express = require("express");
 
-var report = require("./reportify");
+var reportify = require("./reportify");
 var throughify = require("./throughify");
 
 var gulp = require("gulp");
 var gulp_browserify = require("gulp-browserify");
 
-var BROWSERIFY_OPTIONS = {/*?!*/};
+var BROWSERIFY_OPTIONS = {transform: "reactify"};
 
 
 route = express.Router();

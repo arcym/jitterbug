@@ -1,2 +1,16 @@
-var example1 = require("./example1.js");
-var example2 = require("./example2.js");
+var React = require("react");
+
+var Hello = React.createClass({
+    render: function() {
+        return (
+            <div>
+                Hello, {this.props.name}!
+            </div>
+        )
+    }
+})
+
+React.render(
+    <Hello name="World" />,
+    document.getElementById("game")
+)
