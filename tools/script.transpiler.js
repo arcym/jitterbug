@@ -10,38 +10,42 @@ var beepbeep = require("beepbeep");
 var colors = require("colors/safe");
 
 
-route = express.Router();
-route.get("/index.js", function(request, response, next)
+module.exports = function(SRCDIR)
 {
-    var source = process.cwd() + "/index.js";
+    route = express.Router();
     
-    fs.exists(source, function(exists)
+    route.get("/index.js", function(request, response, next)
     {
-        if(exists)
+        var source = SRCDIR + "/index.js";
+        
+        fs.exists(source, function(exists)
         {
-            browserify(source)
-                .transform("reactify")
-                .bundle()
-                .on("error", function(error)
-                {
-                    response.status(500).send(":<");
-                    
-                    report = error.message;
-                    report = report.replace(/\r?\n|\r/g, " ");
-                    report = colors.red(report);
-                    console.error(report);
-                    
-                    beepbeep();
-                })
-                .pipe(response);
-            
-            response.set("Content-Type", "text/javascript");
-        }
-        else
-        {
-            next();
-        }
+            if(exists)
+            {
+                browserify(source)
+                    .transform("reactify")
+                    .bundle()
+                    .on("error", function(error)
+                    {
+                        response.status(500).send(":<");
+                        
+                        report = error.message;
+                        report = report.replace(/\r?\n|\r/g, " ");
+                        report = colors.red(report);
+                        console.error(report);
+                        
+                        beepbeep();
+                    })
+                    .pipe(response);
+                
+                response.set("Content-Type", "text/javascript");
+            }
+            else
+            {
+                next();
+            }
+        });
     });
-});
 
-module.exports = route;
+    return route;
+};

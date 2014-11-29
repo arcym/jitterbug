@@ -13,38 +13,42 @@ var colors = require("colors/safe");
 var throughify = require("./throughify");
 
 
-route = express.Router();
-route.get("/*.css", function(request, response, next)
+module.exports = function(SRCDIR)
 {
-    var source = process.cwd() + "/" + request.params[0] + ".scss";
+    route = express.Router();
     
-    fs.exists(source, function(exists)
+    route.get("/*.css", function(request, response, next)
     {
-        if(exists)
+        var source = SRCDIR + "/" + request.params[0] + ".scss";
+        
+        fs.exists(source, function(exists)
         {
-            gulp.src(source)
-                .pipe(gulp_sass())
-                .on("error", function(error)
-                {
-                    response.status(500).send(":<");
-                    
-                    report = error.message;
-                    report = report.replace(/\r?\n|\r/g, " ");
-                    report = colors.red(report);
-                    console.error(report);
-                    
-                    beepbeep();
-                })
-                .pipe(gulp_autoprefixer())
-                .pipe(throughify(response))
-            
-            response.set("Content-Type", "text/css");
-        }
-        else
-        {
-            next();
-        }
+            if(exists)
+            {
+                gulp.src(source)
+                    .pipe(gulp_sass())
+                    .on("error", function(error)
+                    {
+                        response.status(500).send(":<");
+                        
+                        report = error.message;
+                        report = report.replace(/\r?\n|\r/g, " ");
+                        report = colors.red(report);
+                        console.error(report);
+                        
+                        beepbeep();
+                    })
+                    .pipe(gulp_autoprefixer())
+                    .pipe(throughify(response))
+                
+                response.set("Content-Type", "text/css");
+            }
+            else
+            {
+                next();
+            }
+        });
     });
-});
 
-module.exports = route;
+    return route;
+};
