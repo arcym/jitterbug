@@ -1,8 +1,15 @@
 {
   "name": "jitterbug",
-  "version": "1.0.2",
-  "author": "amcp",
-  "description": "A just-in-time compiler.",
+  "version": "1.0.4",
+  "author": {
+    "name": "Andrew McPherson",
+    "email": "andrewmcp333@gmail.com"
+  },
+  "description": "A just-in-time compiler for web development.",
+  "keywords": [
+    "just-in-time",
+    "compiler"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/arcym/jitterbug.git"
@@ -22,7 +29,7 @@
     "reactify": "~0.17.1",
     "browserify": "~6.3.3"
   },
-  "bin": {
-    "jitterbug": "server.js"
-  }
+  "main": "server.js",
+  "bin": "server.js",
+  "preferGlobal": true
 }
