@@ -1,13 +1,13 @@
 var fs = require("fs");
+var path = require("path");
+
 var express = require("express");
 
-var reportify = require("./reportify");
-var throughify = require("./throughify");
+var reactify = require("reactify");
+var browserify = require("browserify");
 
-var gulp = require("gulp");
-var gulp_browserify = require("gulp-browserify");
-
-var BROWSERIFY_OPTIONS = {transform: "reactify"};
+var beepbeep = require("beepbeep");
+var colors = require("colors/safe");
 
 
 route = express.Router();
@@ -19,14 +19,21 @@ route.get("/game.js", function(request, response, next)
     {
         if(exists)
         {
-            gulp.src(source)
-                .pipe(gulp_browserify(BROWSERIFY_OPTIONS))
+            browserify(source)
+                .transform("reactify")
+                .bundle()
                 .on("error", function(error)
                 {
                     response.status(500).send(":<");
-                    reportify(error);
+                    
+                    report = error.message;
+                    report = report.replace(/\r?\n|\r/g, " ");
+                    report = colors.red(report);
+                    console.error(report);
+                    
+                    beepbeep();
                 })
-                .pipe(throughify(response))
+                .pipe(response);
             
             response.set("Content-Type", "text/javascript");
         }

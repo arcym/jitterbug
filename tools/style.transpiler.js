@@ -1,18 +1,16 @@
 var fs = require("fs");
+var path = require("path");
+
 var express = require("express");
-
-var reportify = require("./reportify");
-var throughify = require("./throughify");
-
-var beepbeep = require("beepbeep");
-var colors = require("colors/safe");
 
 var gulp = require("gulp");
 var gulp_sass = require("gulp-sass");
 var gulp_autoprefixer = require("gulp-autoprefixer");
 
-var SASS_OPTIONS = {outputStyle: "compressed"};
-var AUTOPREFIXER_OPTIONS = {browsers: ["last 2 versions"]};
+var beepbeep = require("beepbeep");
+var colors = require("colors/safe");
+
+var throughify = require("./throughify");
 
 
 route = express.Router();
@@ -25,13 +23,19 @@ route.get("/*.css", function(request, response, next)
         if(exists)
         {
             gulp.src(source)
-                .pipe(gulp_sass(SASS_OPTIONS))
+                .pipe(gulp_sass())
                 .on("error", function(error)
                 {
                     response.status(500).send(":<");
-                    reportify(error);
+                    
+                    report = error.message;
+                    report = report.replace(/\r?\n|\r/g, " ");
+                    report = colors.red(report);
+                    console.error(report);
+                    
+                    beepbeep();
                 })
-                .pipe(gulp_autoprefixer(AUTOPREFIXER_OPTIONS))
+                .pipe(gulp_autoprefixer())
                 .pipe(throughify(response))
             
             response.set("Content-Type", "text/css");

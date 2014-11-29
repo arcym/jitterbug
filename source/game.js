@@ -11,6 +11,6 @@ var Hello = React.createClass({
 })
 
 React.render(
-    <Hello name="World" />,
+    <Hello name="Andrew"/>,
     document.getElementById("game")
 )
