@@ -1,27 +1,46 @@
 var React = require("react")
 var ReactRouter = require("react-router")
+var Firebase = require("firebase")
+var ReactFire = require("reactfire")
 
-var Route = ReactRouter.Route;
-var DefaultRoute = ReactRouter.DefaultRoute;
-var NotFoundRoute = ReactRouter.NotFoundRoute;
-var RouteHandler = ReactRouter.RouteHandler;
-var Link = ReactRouter.Link;
+var Route = ReactRouter.Route
+var DefaultRoute = ReactRouter.DefaultRoute
+var NotFoundRoute = ReactRouter.NotFoundRoute
+var RouteHandler = ReactRouter.RouteHandler
+var Link = ReactRouter.Link
 
 var Game = React.createClass({
+    mixins: [
+        ReactFire
+    ],
+    getInitialState: function() {
+        return {
+            users: []
+        }
+    },
+    componentWillMount: function() {
+        var firebase = new Firebase("https://jitterbug.firebaseio.com/users");
+        this.bindAsArray(firebase, "users");
+    },
     render: function() {
+        var users = this.state.users.map(function(user) {
+            return (
+                <li>
+                    {user}
+                </li>
+            )
+        })
         return (
             <div>
-                <div>
-                    <Link to="/session">Session</Link>
-                    <Link to="/">Splash</Link>
-                </div>
-                <RouteHandler/>
+                <ol>{users}</ol>
             </div>
         )
     }
 })
 
-var Splash = React.createClass({
+React.render(<Game/>, document.getElementById("game"))
+
+/*var Splash = React.createClass({
     render: function() {
         return (
             <div>
@@ -61,4 +80,4 @@ var routes = (
 
 ReactRouter.run(routes, function(Handler) {
     React.render(<Handler/>, document.getElementById("game"))
-})
+})*/
