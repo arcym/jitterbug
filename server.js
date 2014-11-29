@@ -2,12 +2,7 @@ server = require("express")();
 
 server.use(require("./tools/style.transpiler.js"));
 server.use(require("./tools/script.transpiler.js"));
-server.use(require("express").static("./source/"));
-
-server.get("/", function(request, response)
-{
-    response.sendFile(__dirname + "/source/game.html");
-});
+server.use(require("express").static(process.cwd()));
 
 server.listen(1271, function()
 {

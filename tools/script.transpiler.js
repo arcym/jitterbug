@@ -11,9 +11,9 @@ var colors = require("colors/safe");
 
 
 route = express.Router();
-route.get("/game.js", function(request, response, next)
+route.get("/index.js", function(request, response, next)
 {
-    var source = "./source/game.js";
+    var source = process.cwd() + "/index.js";
     
     fs.exists(source, function(exists)
     {

@@ -16,7 +16,7 @@ var throughify = require("./throughify");
 route = express.Router();
 route.get("/*.css", function(request, response, next)
 {
-    var source = "./source/" + request.params[0] + ".scss";
+    var source = process.cwd() + "/" + request.params[0] + ".scss";
     
     fs.exists(source, function(exists)
     {
