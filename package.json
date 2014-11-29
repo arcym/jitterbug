@@ -1,9 +1,8 @@
 {
   "name": "jitterbug",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "amcp",
   "description": "A just-in-time compiler.",
-  "main": "server.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/arcym/jitterbug.git"
@@ -23,7 +22,7 @@
     "reactify": "~0.17.1",
     "browserify": "~6.3.3"
   },
-  "scripts": {
-    "start": "node server.js"
+  "bin": {
+    "jitterbug": "server.js"
   }
 }
