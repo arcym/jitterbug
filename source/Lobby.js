@@ -1,19 +1,30 @@
 var React = require("react")
+var ReactRouter = require("react-router")
 var ReactFire = require("reactfire")
 var jQuery = require("jquery")
 
-var SessionLobby = React.createClass({
+var firebase = new Firebase("https://jitterbug.firebaseio.com")
+
+var Lobby = React.createClass({
     mixins: [
-        ReactFire
+        ReactFire,
+        ReactRouter.State
     ],
     getInitialState: function() {
         return {
-            chat: []
+            game: {},
+            chats: []
         }
     },
     componentWillMount: function() {
-        this.firebase = new Firebase("https://jitterbug.firebaseio.com/chat");
-        this.bindAsArray(this.firebase, "chat")
+        var id = this.getParams().id;
+        this.refs = {
+            game: firebase.child("games").child(id),
+            chats: firebase.child("chats").child(id)
+        }
+        
+        this.bindAsObject(this.refs.game, "game")
+        this.bindAsArray(this.refs.chats, "chats")
     },
     onChatSubmit: function(event) {
         event.preventDefault()
@@ -21,12 +32,12 @@ var SessionLobby = React.createClass({
         var value = jQuery(event.target).find("input").val()
         jQuery(event.target).find("input").val(new String())
         
-        this.firebase.push({
+        this.refs.chats.push({
             text: value
         })
     },
     render: function() {
-        var chat = this.state.chat.map(function(chat, key) {
+        var chats = this.state.chats.map(function(chat, key) {
             return (
                 <li key={key}>
                     {chat.text}
@@ -36,7 +47,7 @@ var SessionLobby = React.createClass({
         return (
             <div>
                 <h3>Say something, will ya?</h3>
-                <ol>{chat}</ol>
+                <ol>{chats}</ol>
                 <form onSubmit={this.onChatSubmit}>
                     <input type="text"/>
                 </form>
@@ -45,4 +56,4 @@ var SessionLobby = React.createClass({
     }
 })
 
-module.exports = SessionLobby
+module.exports = Lobby

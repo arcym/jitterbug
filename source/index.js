@@ -8,11 +8,13 @@ var NotFoundRoute = ReactRouter.NotFoundRoute
 var Link = ReactRouter.Link
 
 var Game = require("./Game");
-var SessionLobby = require("./SessionLobby");
+var Lobby = require("./Lobby");
+var Kitchen = require("./Kitchen");
 
 var routes = (
     <Route path="/" name="game" handler={Game}>
-        <DefaultRoute handler={SessionLobby}/>
+        <DefaultRoute handler={Kitchen}/>
+        <Route name="lobby" path=":id" handler={Lobby}/>
     </Route>
 )
 
