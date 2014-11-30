@@ -1,19 +1,18 @@
 var React = require("react")
 var ReactRouter = require("react-router")
 var ReactFire = require("reactfire")
-var jQuery = require("jquery")
+var jQuery = $ = require("jquery")
 
 var firebase = new Firebase("https://jitterbug.firebaseio.com")
 
 var Lobby = React.createClass({
     mixins: [
         ReactFire,
-        ReactRouter.Navigation,
         ReactRouter.State
     ],
     getInitialState: function() {
         return {
-            game: {},
+            game: false,
             chats: []
         }
     },
@@ -23,41 +22,50 @@ var Lobby = React.createClass({
             game: firebase.child("games").child(id),
             chats: firebase.child("chats").child(id)
         }
-        
-        this.bindAsObject(this.refs.game, "game")
-        this.bindAsArray(this.refs.chats, "chats")
+        this.refs.game.once("value", function(data) {
+            if(data.val() != null) {
+                this.bindAsObject(this.refs.game, "game")
+                this.bindAsArray(this.refs.chats, "chats")
+            }
+        }.bind(this))
     },
     componentWillReceiveProps: function() {
-        console.log("!")
-        this.forceUpdate()
+        //console.log(this.getParams().id)
     },
     onChatSubmit: function(event) {
         event.preventDefault()
-        
-        var value = jQuery(event.target).find("input").val()
-        jQuery(event.target).find("input").val(new String())
-        
+        var value = $(event.target).find("input").val()
+        $(event.target).find("input").val(new String())
         this.refs.chats.push({
             text: value
         })
     },
     render: function() {
-        var chats = this.state.chats.map(function(chat, key) {
+        if(this.state.game == false) {
             return (
-                <li key={key}>
-                    {chat.text}
-                </li>
+                <div>
+                    <h3>{this.getParams().id}</h3>
+                    searching for your game...
+                </div>
             )
-        })
-        return (
-            <div>
-                <h3>Say something, will ya?</h3>
-                <ol>{chats}</ol>
-                <form onSubmit={this.onChatSubmit}>
-                    <input type="text"/>
-                </form>
-            </div>
-        )
+        } else {
+            var chats = this.state.chats.map(function(chat, key) {
+                return (
+                    <li key={key}>
+                        {chat.text}
+                    </li>
+                )
+            })
+            return (
+                <div>
+                    <h3>{this.getParams().id}</h3>
+                    <ol>{chats}</ol>
+                    <form onSubmit={this.onChatSubmit}>
+                        <input type="text"/>
+                    </form>
+                </div>
+            )
+        }
     }
 })
 
