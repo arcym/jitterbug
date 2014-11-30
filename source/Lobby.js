@@ -13,24 +13,35 @@ var Lobby = React.createClass({
     getInitialState: function() {
         return {
             game: false,
-            chats: []
+            chats: false
         }
     },
     componentWillMount: function() {
+        this.establishRefs()
+        this.bindState()
+    },
+    componentWillReceiveProps: function() {
+        this.establishRefs()
+        this.bindState()
+    },
+    establishRefs: function() {
         var id = this.getParams().id;
         this.refs = {
             game: firebase.child("games").child(id),
             chats: firebase.child("chats").child(id)
         }
+    },
+    bindState: function() {
+        this.setState(this.getInitialState())
         this.refs.game.once("value", function(data) {
             if(data.val() != null) {
                 this.bindAsObject(this.refs.game, "game")
                 this.bindAsArray(this.refs.chats, "chats")
+            } else {
+                //prompt players that the session wasn't found
+                //by setting {this.state.game} to something.
             }
         }.bind(this))
-    },
-    componentWillReceiveProps: function() {
-        //console.log(this.getParams().id)
     },
     onChatSubmit: function(event) {
         event.preventDefault()
