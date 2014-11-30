@@ -5,20 +5,10 @@ var Firebase = require("firebase")
 var Route = ReactRouter.Route
 var DefaultRoute = ReactRouter.DefaultRoute
 var NotFoundRoute = ReactRouter.NotFoundRoute
-var RouteHandler = ReactRouter.RouteHandler
 var Link = ReactRouter.Link
 
+var Game = require("./Game");
 var SessionLobby = require("./SessionLobby");
-
-var Game = React.createClass({
-    render: function() {
-        return (
-            <div id="game">
-                <RouteHandler/>
-            </div>
-        )
-    }
-})
 
 var routes = (
     <Route path="/" name="game" handler={Game}>

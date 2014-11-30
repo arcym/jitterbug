@@ -1,6 +1,6 @@
 var React = require("react")
 var ReactFire = require("reactfire")
-var jQuery = require("jQuery")
+var jQuery = require("jquery")
 
 var SessionLobby = React.createClass({
     mixins: [
@@ -16,7 +16,7 @@ var SessionLobby = React.createClass({
         this.bindAsArray(this.firebase, "chat")
     },
     onChatSubmit: function(event) {
-        event.preventDefault();
+        event.preventDefault()
         
         var value = jQuery(event.target).find("input").val()
         jQuery(event.target).find("input").val(new String())
@@ -26,21 +26,23 @@ var SessionLobby = React.createClass({
         })
     },
     render: function() {
-        var chat = this.state.chat.map(function(chat) {
+        var chat = this.state.chat.map(function(chat, key) {
             return (
-                <li>{chat.text}</li>
+                <li key={key}>
+                    {chat.text}
+                </li>
             )
         })
         return (
             <div>
                 <h3>Say something, will ya?</h3>
+                <ol>{chat}</ol>
                 <form onSubmit={this.onChatSubmit}>
                     <input type="text"/>
                 </form>
-                <ol>{chat}</ol>
             </div>
         )
     }
 })
 
-module.exports = SessionLobby;
+module.exports = SessionLobby
