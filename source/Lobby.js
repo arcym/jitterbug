@@ -8,6 +8,7 @@ var firebase = new Firebase("https://jitterbug.firebaseio.com")
 var Lobby = React.createClass({
     mixins: [
         ReactFire,
+        ReactRouter.Navigation,
         ReactRouter.State
     ],
     getInitialState: function() {
@@ -25,6 +26,10 @@ var Lobby = React.createClass({
         
         this.bindAsObject(this.refs.game, "game")
         this.bindAsArray(this.refs.chats, "chats")
+    },
+    componentWillReceiveProps: function() {
+        console.log("!")
+        this.forceUpdate()
     },
     onChatSubmit: function(event) {
         event.preventDefault()
