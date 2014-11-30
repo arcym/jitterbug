@@ -4,16 +4,18 @@ var ReactFire = require("reactfire")
 var jQuery = $ = require("jquery")
 
 var firebase = new Firebase("https://jitterbug.firebaseio.com")
+var LOADING_GAME = "loading";
 
 var Lobby = React.createClass({
     mixins: [
         ReactFire,
+        ReactRouter.Navigation,
         ReactRouter.State
     ],
     getInitialState: function() {
         return {
-            game: null,
-            chats: []
+            game: LOADING_GAME,
+            chats: new Array()
         }
     },
     componentWillMount: function() {
@@ -21,27 +23,24 @@ var Lobby = React.createClass({
         this.bindState()
     },
     componentWillReceiveProps: function() {
+        this.unbindState()
         this.establishRefs()
         this.bindState()
     },
     establishRefs: function() {
-        var id = this.getParams().id;
+        var id = this.getParams().id
         this.refs = {
             game: firebase.child("games").child(id),
             chats: firebase.child("chats").child(id)
         }
     },
     bindState: function() {
-        this.setState(this.getInitialState())
-        this.refs.game.once("value", function(data) {
-            if(data.val() != null) {
-                this.bindAsObject(this.refs.game, "game")
-                this.bindAsArray(this.refs.chats, "chats")
-            } else {
-                this.state.game = false;
-                this.setState(this.state);
-            }
-        }.bind(this))
+        this.bindAsObject(this.refs.game, "game")
+        this.bindAsArray(this.refs.chats, "chats")
+    },
+    unbindState: function() {
+        this.unbind("game")
+        this.unbind("chats")
     },
     onChatSubmit: function(event) {
         event.preventDefault()
@@ -52,14 +51,14 @@ var Lobby = React.createClass({
         })
     },
     render: function() {
-        if(this.state.game === null) {
+        if(this.state.game === LOADING_GAME) {
             return (
                 <div>
                     <h3>{this.getParams().id}</h3>
                     searching for your game...
                 </div>
             )
-        } else if(this.state.game === false) {
+        } else if(this.state.game === null) {
             return (
                 <div>
                     <h3>{this.getParams().id}</h3>
