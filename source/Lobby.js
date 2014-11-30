@@ -12,8 +12,8 @@ var Lobby = React.createClass({
     ],
     getInitialState: function() {
         return {
-            game: false,
-            chats: false
+            game: null,
+            chats: []
         }
     },
     componentWillMount: function() {
@@ -38,8 +38,8 @@ var Lobby = React.createClass({
                 this.bindAsObject(this.refs.game, "game")
                 this.bindAsArray(this.refs.chats, "chats")
             } else {
-                //prompt players that the session wasn't found
-                //by setting {this.state.game} to something.
+                this.state.game = false;
+                this.setState(this.state);
             }
         }.bind(this))
     },
@@ -52,11 +52,18 @@ var Lobby = React.createClass({
         })
     },
     render: function() {
-        if(this.state.game == false) {
+        if(this.state.game === null) {
             return (
                 <div>
                     <h3>{this.getParams().id}</h3>
                     searching for your game...
+                </div>
+            )
+        } else if(this.state.game === false) {
+            return (
+                <div>
+                    <h3>{this.getParams().id}</h3>
+                    your game wasnt found!
                 </div>
             )
         } else {
