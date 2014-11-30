@@ -42,13 +42,18 @@ var Lobby = React.createClass({
         this.unbind("game")
         this.unbind("chats")
     },
-    onChatSubmit: function(event) {
+    onSubmitChat: function(event) {
         event.preventDefault()
         var value = $(event.target).find("input").val()
         $(event.target).find("input").val(new String())
         this.refs.chats.push({
             text: value
         })
+    },
+    onDeleteGame: function(event) {
+        this.refs.game.remove()
+        this.refs.chats.remove()
+        this.transitionTo("/")
     },
     render: function() {
         if(this.state.game === LOADING_GAME) {
@@ -77,9 +82,12 @@ var Lobby = React.createClass({
                 <div>
                     <h3>{this.getParams().id}</h3>
                     <ol>{chats}</ol>
-                    <form onSubmit={this.onChatSubmit}>
+                    <form onSubmit={this.onSubmitChat}>
                         <input type="text"/>
                     </form>
+                    <button onClick={this.onDeleteGame}>
+                        Delete this Game
+                    </button>
                 </div>
             )
         }
