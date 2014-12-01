@@ -4,7 +4,8 @@ var ReactFire = require("reactfire")
 var jQuery = $ = require("jquery")
 
 var firebase = new Firebase("https://jitterbug.firebaseio.com")
-var LOADING_GAME = "loading";
+
+var LOADING_SESSION = "LOADING_SESSION"
 
 var Lobby = React.createClass({
     mixins: [
@@ -14,7 +15,7 @@ var Lobby = React.createClass({
     ],
     getInitialState: function() {
         return {
-            game: LOADING_GAME,
+            session: LOADING_SESSION,
             chats: new Array()
         }
     },
@@ -30,16 +31,16 @@ var Lobby = React.createClass({
     establishRefs: function() {
         var id = this.getParams().id
         this.refs = {
-            game: firebase.child("games").child(id),
+            session: firebase.child("sessions").child(id),
             chats: firebase.child("chats").child(id)
         }
     },
     bindState: function() {
-        this.bindAsObject(this.refs.game, "game")
+        this.bindAsObject(this.refs.session, "session")
         this.bindAsArray(this.refs.chats, "chats")
     },
     unbindState: function() {
-        this.unbind("game")
+        this.unbind("session")
         this.unbind("chats")
     },
     onSubmitChat: function(event) {
@@ -50,24 +51,33 @@ var Lobby = React.createClass({
             text: value
         })
     },
-    onDeleteGame: function(event) {
-        this.refs.game.remove()
+    onJoinSession: function(event) {
+        firebase.authAnonymously(function(error, data) {
+            if(error) {
+                console.error(error)
+            } else {
+                console.log(data)
+            }
+        })
+    },
+    onDeleteSession: function(event) {
+        this.refs.session.remove()
         this.refs.chats.remove()
         this.transitionTo("/")
     },
     render: function() {
-        if(this.state.game === LOADING_GAME) {
+        if(this.state.session === LOADING_SESSION) {
             return (
                 <div>
                     <h3>{this.getParams().id}</h3>
-                    searching for your game...
+                    searching for your session...
                 </div>
             )
-        } else if(this.state.game === null) {
+        } else if(this.state.session === null) {
             return (
                 <div>
                     <h3>{this.getParams().id}</h3>
-                    your game wasnt found!
+                    your session wasnt found!
                 </div>
             )
         } else {
@@ -85,8 +95,11 @@ var Lobby = React.createClass({
                     <form onSubmit={this.onSubmitChat}>
                         <input type="text"/>
                     </form>
-                    <button onClick={this.onDeleteGame}>
-                        Delete this Game
+                    <button onClick={this.onDeleteSession}>
+                        Delete this Session
+                    </button>
+                    <button onClick={this.onJoinSession}>
+                        Join this Session
                     </button>
                 </div>
             )

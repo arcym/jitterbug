@@ -10,12 +10,12 @@ var Kitchen = React.createClass({
         ReactFire,
         ReactRouter.Navigation
     ],
-    onNewGameSubmit: function(event)
+    onSubmitSession: function(event)
     {
         event.preventDefault()
         var id = $(event.target).find("input").val()
         $(event.target).find("input").val(new String())
-        var ref = firebase.child("games").child(id)
+        var ref = firebase.child("sessions").child(id)
         ref.set({
             dateCreated: Date.now()
         }, function() {
@@ -26,8 +26,8 @@ var Kitchen = React.createClass({
         return (
             <div>
                 <h2>This is the "kitchen."</h2>
-                <div>Want to make a game?</div>
-                <form onSubmit={this.onNewGameSubmit}>
+                <div>Want to make a session?</div>
+                <form onSubmit={this.onSubmitSession}>
                     <input type="text"/>
                 </form>
             </div>
