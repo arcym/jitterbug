@@ -1,5 +1,6 @@
 var React = require("react")
 var ReactRouter = require("react-router")
+var Firebase = require("firebase")
 var ReactFire = require("reactfire")
 var jQuery = $ = require("jquery")
 
@@ -23,7 +24,6 @@ var Lobby = React.createClass({
     componentWillMount: function() {
         this.establishRefs()
         this.bindState()
-        this.bindAuth()
     },
     componentWillReceiveProps: function() {
         this.unbindState()
@@ -36,20 +36,6 @@ var Lobby = React.createClass({
             session: firebase.child("sessions").child(id),
             chats: firebase.child("chats").child(id)
         }
-    },
-    bindAuth: function() {
-        firebase.onAuth(function(data) {
-            console.log(data.uid)
-            if(data != null) {
-                this.refs.user = firebase.child("users").child(data.uid)
-                this.bindAsObject(this.refs.user, "user")
-                console.log("logged in!")
-            } else {
-                delete this.refs.user
-                this.unbind("user")
-                console.log("logged out!")
-            }
-        }.bind(this))
     },
     bindState: function() {
         this.bindAsObject(this.refs.session, "session")
