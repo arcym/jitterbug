@@ -1,25 +1,37 @@
 var React = require("react")
-var firebase = new Firebase("https://jitterbug.firebaseio.com")
+var Reflux = require("reflux")
+
+var CurrentUserStore = require("./CurrentUserStore")
+var SetCurrentUserAction = require("./SetCurrentUserAction")
 
 var UserPanel = React.createClass({
-    /*componentWillMount: function() {
-        firebase.onAuth(function(data) {
-            console.log(data.uid)
-            if(data != null) {
-                this.refs.user = firebase.child("users").child(data.uid)
-                this.bindAsObject(this.refs.user, "user")
-                console.log("logged in!")
-            } else {
-                delete this.refs.user
-                this.unbind("user")
-                console.log("logged out!")
-            }
-        }.bind(this))
-    },*/
+    mixins: [
+        Reflux.ListenerMixin
+    ],
+    getInitialState: function() {
+        return {
+            id: 0
+        }
+    },
+    componentDidMount: function() {
+        this.listenTo(CurrentUserStore, this.onCurrentUserStore)
+    },
+    onCurrentUserStore: function(id) {
+        this.setState({
+            id: id
+        })
+    },
+    onSetCurrentUser: function()
+    {
+        SetCurrentUserAction(1270011271)
+    },
     render: function() {
         return (
             <div id="user-panel">
-                Hello World!
+                {this.state.id}
+                <button onClick={this.onSetCurrentUser}>
+                    Set Current User!
+                </button>
             </div>
         )
     }

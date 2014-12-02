@@ -22,7 +22,8 @@
     "react-router": "~0.11.4",
     "firebase": "~2.0.5",
     "jquery": "~2.1.1",
-    "reactfire": "~0.4.0"
+    "reactfire": "~0.4.0",
+    "reflux": "~0.2.0"
   },
   "devDependencies": {
     "through": "~2.3.6",
