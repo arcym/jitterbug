@@ -5,6 +5,8 @@ var jQuery = $ = require("jquery")
 
 var firebase = new Firebase("https://jitterbug.firebaseio.com")
 
+var UserPanel = require("./UserPanel")
+
 var Kitchen = React.createClass({
     mixins: [
         ReactFire,
@@ -30,6 +32,7 @@ var Kitchen = React.createClass({
                 <form onSubmit={this.onSubmitSession}>
                     <input type="text"/>
                 </form>
+                <UserPanel/>
             </div>
         )
     }

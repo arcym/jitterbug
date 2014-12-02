@@ -8,6 +8,8 @@ var firebase = new Firebase("https://jitterbug.firebaseio.com")
 
 var LOADING_SESSION = "LOADING_SESSION"
 
+var UserPanel = require("./UserPanel")
+
 var Lobby = React.createClass({
     mixins: [
         ReactFire,
@@ -73,6 +75,7 @@ var Lobby = React.createClass({
                 <div>
                     <h3>{this.getParams().id}</h3>
                     searching for your session...
+                    <UserPanel/>
                 </div>
             )
         } else if(this.state.session === null) {
@@ -80,6 +83,7 @@ var Lobby = React.createClass({
                 <div>
                     <h3>{this.getParams().id}</h3>
                     your session wasnt found!
+                    <UserPanel/>
                 </div>
             )
         } else {
@@ -103,6 +107,7 @@ var Lobby = React.createClass({
                     <button onClick={this.onJoinSession}>
                         Join this Session
                     </button>
+                    <UserPanel/>
                 </div>
             )
         }

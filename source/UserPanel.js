@@ -1,8 +1,7 @@
 var React = require("react")
 var Reflux = require("reflux")
 
-var CurrentUserStore = require("./CurrentUserStore")
-var SetCurrentUserAction = require("./SetCurrentUserAction")
+var CurrentUser = require("./CurrentUser")
 
 var UserPanel = React.createClass({
     mixins: [
@@ -14,7 +13,7 @@ var UserPanel = React.createClass({
         }
     },
     componentDidMount: function() {
-        this.listenTo(CurrentUserStore, this.onCurrentUserStore)
+        this.listenTo(CurrentUser.Store, this.onCurrentUserStore)
     },
     onCurrentUserStore: function(id) {
         this.setState({
@@ -23,7 +22,7 @@ var UserPanel = React.createClass({
     },
     onSetCurrentUser: function()
     {
-        SetCurrentUserAction(1270011271)
+        CurrentUser.Actions.SetID(Date.now())
     },
     render: function() {
         return (
