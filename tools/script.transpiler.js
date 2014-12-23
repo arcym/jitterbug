@@ -3,8 +3,9 @@ var path = require("path");
 
 var express = require("express");
 
-var reactify = require("reactify");
 var browserify = require("browserify");
+var reactify = require("reactify");
+var aliasify = require("aliasify");
 
 var beepbeep = require("beepbeep");
 var colors = require("colors/safe");
@@ -24,6 +25,13 @@ module.exports = function(SRCDIR)
             {
                 browserify(source)
                     .transform("reactify")
+                    .transform(aliasify.configure({
+                        aliases: {
+                            "<root>": SRCDIR
+                        },
+                        configDir: __dirname,
+                        verbose: false
+                    }))
                     .bundle()
                     .on("error", function(error)
                     {
