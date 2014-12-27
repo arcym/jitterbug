@@ -4,7 +4,7 @@ var path = require("path");
 var express = require("express");
 
 var gulp = require("gulp");
-var gulp_sass = require("gulp-sass");
+var gulp_sass = require("gulp-ruby-sass");
 var gulp_autoprefixer = require("gulp-autoprefixer");
 
 var beepbeep = require("beepbeep");
@@ -12,7 +12,9 @@ var colors = require("colors/safe");
 
 var throughify = require("./throughify");
 
-
+var SASS_OPTIONS = {style: "compressed", quiet: true, "sourcemap=none": true}
+var AUTOPREFIXER_OPTIONS = "last 2 version"
+    
 module.exports = function(SRCDIR)
 {
     route = express.Router();
@@ -26,7 +28,7 @@ module.exports = function(SRCDIR)
             if(exists)
             {
                 gulp.src(source)
-                    .pipe(gulp_sass())
+                    .pipe(gulp_sass(SASS_OPTIONS))
                     .on("error", function(error)
                     {
                         response.status(500).send(":<");
@@ -38,7 +40,7 @@ module.exports = function(SRCDIR)
                         
                         beepbeep();
                     })
-                    .pipe(gulp_autoprefixer())
+                    .pipe(gulp_autoprefixer(AUTOPREFIXER_OPTIONS))
                     .pipe(throughify(response))
                 
                 response.set("Content-Type", "text/css");
