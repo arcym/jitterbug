@@ -1,4 +1,4 @@
-var SCRDIR = __dirname + "/source";
+var SCRDIR = __dirname + "/project";
 
 server = require("express")();
 
